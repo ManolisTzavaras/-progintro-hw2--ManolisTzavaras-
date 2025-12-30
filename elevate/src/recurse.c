@@ -23,7 +23,7 @@ int main() {
         printf("No lift stops\n");
         printf("The minimum cost is: %d\n", cost);
     } else {
-        // Demo: δοκιμή όλων των πιθανών τελευταίων ορόφων
+        // Demo
         for(int lastStop = 0; lastStop <= 20; lastStop++) {
             cost = 0;
             printf("\nTesting last stop at floor %d\n", lastStop);
