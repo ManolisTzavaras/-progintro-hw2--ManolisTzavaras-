@@ -1,47 +1,63 @@
 #include <stdio.h>
+int fw(int a, int b, int dests[], int numPeople)
+{
 
-int main() {
-    int numPeople, numStops;
-    int dests[100];
-    int cost;
+    int cost = 0;
 
-    printf("Enter number of people (max 100): ");
-    scanf("%d", &numPeople);
-
-    printf("Enter number of lift stops: ");
-    scanf("%d", &numStops);
-
-    printf("Enter destination floors separated by space:\n");
     for(int i = 0; i < numPeople; i++)
-        scanf("%d", &dests[i]);
+    {
+        if (dests[i] > a && (b == -1 || dests[i] <= b))
+        {
+         
+            if (b == -1)
+            {
+                
+                cost += dests[i] - a;
 
-    if(numStops == 0) {
-        cost = 0;
-        for(int i = 0; i < numPeople; i++)
-            cost += dests[i];
-
-        printf("No lift stops\n");
-        printf("The minimum cost is: %d\n", cost);
-    } else {
-        // Demo
-        for(int lastStop = 0; lastStop <= 20; lastStop++) {
-            cost = 0;
-            printf("\nTesting last stop at floor %d\n", lastStop);
-            for(int i = 0; i < numPeople; i++) {
-                int walk;
-                if(dests[i] > lastStop)
-                    walk = dests[i] - lastStop;
-                else
-                    walk = lastStop - dests[i];
-
-                printf(" Passenger %d: destination %d, walk %d\n",
-                        i+1, dests[i], walk);
-
-                cost += walk;
             }
-            printf(" Total cost: %d\n", cost);
+            else
+            {
+
+                int distance_a = dests[i] - a;
+                int distance_b = b -dests[i];
+
+
+                if (distance_a == distance_b)
+                {
+                    cost += distance_a;
+                }
+                
+
+                else if (distance_a < distance_b)
+                {
+                    
+                    cost += distance_a;
+                }
+                else
+                {
+                    cost += distance_b;
+
+                }
+                
+                
+
+
+            }
+
+
         }
+        
+
+
+        
     }
 
-    return 0;
+    return cost;
+}
+
+int RECURSIVE(int stops, int biggest, int dests[], int numPeople)
+{
+
+
+
 }
