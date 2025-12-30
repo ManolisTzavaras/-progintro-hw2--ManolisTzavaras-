@@ -1,44 +1,46 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(int argc, char *argv[])
-{
-    FILE *fp;
+int main() {
     int numPeople, numStops;
-    int i;
-    int value;
-    int cost = 0;
+    int dests[100];
+    int cost;
 
-    if (argc < 2) {
-        return 1;
-    }
+    printf("Enter number of people (max 100): ");
+    scanf("%d", &numPeople);
 
-    fp = open(argv[1], "r");
-    if (fp == NULL) {
-        return 1;
-    }
+    printf("Enter number of lift stops: ");
+    scanf("%d", &numStops);
 
-    if (scanf(fp, "%d %d", &numPeople, &numStops) != 2) {
-        close(fp);
-        return 1;
-    }
+    printf("Enter destination floors separated by space:\n");
+    for(int i = 0; i < numPeople; i++)
+        scanf("%d", &dests[i]);
 
-    for (i = 0; i < numPeople; i++) {
-        if (scanf(fp, "%d", &value) != 1) {
-            close(fp);
-            return 1;
-        }
-        cost += value;   
-    }
+    if(numStops == 0) {
+        cost = 0;
+        for(int i = 0; i < numPeople; i++)
+            cost += dests[i];
 
-     close(fp); 
-
-    if (numStops == 0) {
         printf("No lift stops\n");
         printf("The minimum cost is: %d\n", cost);
     } else {
-        printf("Last stop at floor: %d\n", 0);
-        printf("The minimum cost is: %d\n", cost);
+        // Demo: δοκιμή όλων των πιθανών τελευταίων ορόφων
+        for(int lastStop = 0; lastStop <= 20; lastStop++) {
+            cost = 0;
+            printf("\nTesting last stop at floor %d\n", lastStop);
+            for(int i = 0; i < numPeople; i++) {
+                int walk;
+                if(dests[i] > lastStop)
+                    walk = dests[i] - lastStop;
+                else
+                    walk = lastStop - dests[i];
+
+                printf(" Passenger %d: destination %d, walk %d\n",
+                        i+1, dests[i], walk);
+
+                cost += walk;
+            }
+            printf(" Total cost: %d\n", cost);
+        }
     }
 
     return 0;
