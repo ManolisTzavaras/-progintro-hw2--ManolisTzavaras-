@@ -57,7 +57,28 @@ int fw(int a, int b, int dests[], int numPeople)
 
 int RECURSIVE(int stops, int biggest, int dests[], int numPeople)
 {
+    if ( stops == 0)
+    {
+        
+        return fw(0, -1, dests, numPeople);
 
+    }
 
+    int min_cost = -1;
+
+    for(int k = 0; k <= biggest; k++)
+    {
+
+        int cost = Recursive(stops - 1, k, dests, numPeople) - fw(k , -1, dests, numPeople) + fw(k, biggest, dests, numPeople) + fw(biggest, -1, dests, numPeople);
+
+        if (cost < min_cost || min_cost == -1)
+        {
+            min_cost = cost;
+        }
+        
+
+    }
+    
+    return min_cost;
 
 }
