@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include "elevate.h"
+#include <stdlib.h>
 
 int main(int argc, char * argv[]){
 
