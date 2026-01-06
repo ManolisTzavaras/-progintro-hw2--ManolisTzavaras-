@@ -49,10 +49,10 @@ int main(int argc, char * argv[]){
             return 1;
 
         }
-
-        if (dest > numFloors)
+ 
+        if (dest > numFloors || numFloors < 0)
         {
-            numFloors > dest; 
+            numFloors = dest; 
 
         }
         
@@ -65,43 +65,19 @@ int main(int argc, char * argv[]){
 
     fclose(file);
 
-    if (!strcmp(argv[2], "--mode=recurse"))
+    if (argc > 2)
     {
-        
-        if (numStops > 0)
+        if (!strcmp(argv[2], "--mode=recurse"))
         {
-            int min_cost = -1;
-            int lastFloor = 0;
-
-            for (int j = 0; j <= numFloors; j++)
-            {
-                int cost = Recursive(numStops, j, pinakas, numPeople);
-
-                if(cost < min_cost || min_cost == -1)
-                {
-
-                    min_cost = cost;
-                    lastFloor = j;
-
-
-                }
-
-            }
-            printf("Last stop at floor : %d\n", lastFloor);
-            printf("The minimum cost is : %d\n", min_cost);
+            
+            Recursive_implementation( numStops, numFloors, pinakas , numPeople);
+            
 
         }
-
-        if (numStops == 0)
-        {
-            printf("No lift stops ");
-
-
-        }
-        
-        
-
     }
+    
+
+ 
     
     
 
