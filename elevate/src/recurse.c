@@ -85,3 +85,33 @@ int Recursive(int stops, int biggest, int dests[], int numPeople)
     return min_cost;
 
 }
+void Recursive_implementation(int numStops,int numFloors,int dests[], int numPeople)
+{
+
+    if (numStops > 0)
+    {
+        int minCosts = -1;
+        int LastFloor = 0;
+
+        for (int biggest = 0; biggest <= numFloors; biggest++)
+        {
+            int cost = Recursive(numStops, biggest, dests, numPeople);
+
+            if (minCosts == -1 || cost < minCosts)
+            {
+                minCosts = cost;
+                LastFloor = biggest;
+                
+            }
+            
+
+        }
+        
+        printf("Last stop at floor: %d\n", LastFloor );
+        printf("The minimum cost is: %d\n", minCosts);
+
+
+    }
+    
+    
+}
