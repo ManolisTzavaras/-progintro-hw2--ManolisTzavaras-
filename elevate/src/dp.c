@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "elevate.h"
 
-// Reference: 6-7
+
 
 void solve_dp(int numStops, int numFloors, int dests[], int numPeople, int debug) {
     int **dip_gia_dip = malloc((numStops + 1) * sizeof(int *));
