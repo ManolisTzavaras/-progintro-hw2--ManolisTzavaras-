@@ -1,7 +1,7 @@
 #ifndef ELEVATE_H
 #define ELEVATE_H
 
-// Reference: 6-7
+
 int fw(int a, int b, int dests[], int numPeople);
 int Recursive(int stops, int biggest, int dests[], int numPeople);
 void Recursive_implementation(int numStops, int numFloors, int dests[], int numPeople);
