@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "elevate.h"
 
-// Reference: 6-7
+
 static int **memo_table = NULL;
 
 int Recursive_memo(int stops, int biggest, int dests[], int numPeople) {
