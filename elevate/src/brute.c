@@ -3,8 +3,7 @@
 #include <math.h>
 #include "elevate.h"
 
-// Reference: 6-7
-// Sources: https://www.youtube.com/watch?v=QnzmVBcmki4, https://www.youtube.com/watch?v=KYATf2A5GCQ
+
 
 static int g_minCost = -1;
 static int *g_bestStops = NULL;
