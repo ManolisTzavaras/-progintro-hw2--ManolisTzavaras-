@@ -1,59 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "elevate.h"
-
-
 
 static int g_minCost = -1;
 static int *g_bestStops = NULL;
 
-int calCost(int list[], int numStops, int dest[], int numPeople) {
-    int sum = 0;
-    for (int i = 0; i < numPeople; i++) {
-        int min_dist = dest[i]; // Απόσταση από το ισόγειο (0)
-        for (int j = 0; j < numStops; j++) {
-            int current_dist = abs(dest[i] - list[j]);
-            if (current_dist < min_dist) {
-                min_dist = current_dist;
-            }
-        }
-        sum += min_dist;
-    }
-    return sum;
-}
-
-void generate_combinations(int startFloor, int k, int current_stops[], int numStops, int numFloors, int dests[], int numPeople) {
+void generate_combinations(int start, int k, int current[], int numStops, int numFloors, int dests[], int numPeople) {
     if (k == numStops) {
-        int current_cost = calCost(current_stops, numStops, dests, numPeople);
-        if (g_minCost == -1 || current_cost < g_minCost) {
-            g_minCost = current_cost;
+        int cost = 0;
+        for (int i = 0; i < numPeople; i++) {
+            int min_d = dests[i];
+            for (int j = 0; j < numStops; j++) {
+                int d = abs(dests[i] - current[j]);
+                if (d < min_d) {
+                    min_d = d;
+                }
+            }
+            cost += min_d;
+        }
+        if (g_minCost == -1 || cost < g_minCost) {
+            g_minCost = cost;
             for (int i = 0; i < numStops; i++) {
-                g_bestStops[i] = current_stops[i];
+                g_bestStops[i] = current[i];
             }
         }
         return;
     }
-
-    for (int i = startFloor; i <= numFloors; i++) {
-        current_stops[k] = i;
-        generate_combinations(i + 1, k + 1, current_stops, numStops, numFloors, dests, numPeople);
+    for (int i = start; i <= numFloors; i++) {
+        current[k] = i;
+        generate_combinations(i + 1, k + 1, current, numStops, numFloors, dests, numPeople);
     }
 }
 
 void Brute(int numStops, int numFloors, int dests[], int numPeople) {
-    g_bestStops = malloc(numStops * sizeof(int));
-    int *current_stops = malloc(numStops * sizeof(int));
+    g_bestStops = calloc(numStops, sizeof(int));
+    int *current = calloc(numStops, sizeof(int));
     g_minCost = -1;
+    generate_combinations(1, 0, current, numStops, numFloors, dests, numPeople);
 
-    generate_combinations(1, 0, current_stops, numStops, numFloors, dests, numPeople);
-
-    printf("Lift stops are:");
-    for (int i = 0; i < numStops; i++) {
-        printf(" %d", g_bestStops[i]);
+    if (g_minCost == fw(0, -1, dests, numPeople)) {
+        printf("No lift stops\n");
+    } else {
+        printf("Lift stops are:");
+        for (int i = 0; i < numStops; i++) {
+            if (g_bestStops[i] > 0) {
+                printf(" %d", g_bestStops[i]);
+            }
+        }
+        printf("\n");
     }
-    printf("\nThe minimum cost is: %d\n", g_minCost);
-
+    printf("The minimum cost is: %d\n", g_minCost);
     free(g_bestStops);
-    free(current_stops);
+    free(current);
 }
