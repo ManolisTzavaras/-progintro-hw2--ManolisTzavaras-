@@ -2,52 +2,51 @@
 #include <stdlib.h>
 #include "elevate.h"
 
+static int **memo = NULL;
 
-static int **memo_table = NULL;
-
-int Recursive_memo(int stops, int biggest, int dests[], int numPeople) {
+int Recursive_memo(int stops, int j, int dests[], int numPeople) {
     if (stops == 0) {
         return fw(0, -1, dests, numPeople);
     }
-    if (memo_table[stops][biggest] != -1) {
-        return memo_table[stops][biggest];
+    if (memo[stops][j] != -1) {
+        return memo[stops][j];
     }
-
-    int min_val = -1;
-    for (int k = 0; k <= biggest; k++) {
-        int cost = Recursive_memo(stops - 1, k, dests, numPeople) - fw(k, -1, dests, numPeople) + fw(k, biggest, dests, numPeople) + fw(biggest, -1, dests, numPeople);
-        if (min_val == -1 || cost < min_val) {
-            min_val = cost;
+    int min_v = -1;
+    for (int k = 0; k <= j; k++) {
+        int cost = Recursive_memo(stops - 1, k, dests, numPeople) - fw(k, -1, dests, numPeople) + fw(k, j, dests, numPeople) + fw(j, -1, dests, numPeople);
+        if (min_v == -1 || cost < min_v) {
+            min_v = cost;
         }
     }
-    memo_table[stops][biggest] = min_val;
-    return min_val;
+    memo[stops][j] = min_v;
+    return min_v;
 }
 
 void Memoize_implementation(int numStops, int numFloors, int dests[], int numPeople) {
-    memo_table = malloc((numStops + 1) * sizeof(int *));
+    memo = malloc((numStops + 1) * sizeof(int *));
     for (int i = 0; i <= numStops; i++) {
-        memo_table[i] = malloc((numFloors + 1) * sizeof(int));
+        memo[i] = malloc((numFloors + 1) * sizeof(int));
         for (int j = 0; j <= numFloors; j++) {
-            memo_table[i][j] = -1;
+            memo[i][j] = -1;
         }
     }
-
-    int minCosts = -1;
-    int LastFloor = 0;
-    for (int biggest = 0; biggest <= numFloors; biggest++) {
-        int cost = Recursive_memo(numStops, biggest, dests, numPeople);
-        if (minCosts == -1 || cost < minCosts) {
-            minCosts = cost;
-            LastFloor = biggest;
+    int minC = -1;
+    int lastF = 0;
+    for (int j = 0; j <= numFloors; j++) {
+        int cost = Recursive_memo(numStops, j, dests, numPeople);
+        if (minC == -1 || cost < minC) {
+            minC = cost;
+            lastF = j;
         }
     }
-
-    printf("Last stop at floor: %d\n", LastFloor);
-    printf("The minimum cost is: %d\n", minCosts);
-
+    if (minC == fw(0, -1, dests, numPeople)) {
+        printf("No lift stops\n");
+    } else {
+        printf("Last stop at floor: %d\n", lastF);
+    }
+    printf("The minimum cost is: %d\n", minC);
     for (int i = 0; i <= numStops; i++) {
-        free(memo_table[i]);
+        free(memo[i]);
     }
-    free(memo_table);
+    free(memo);
 }
